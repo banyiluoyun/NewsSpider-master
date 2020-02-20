@@ -59,18 +59,7 @@ class ScrapyspiderSpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
         
-logger = logging.getLogger(__name__)
-# 隧道id和密码
-tid = "t17732540351546"
-password = "9myov9n2"
-# 隧道host和端口
-tunnel_master_host = "tps176.kdlapi.com"
-tunnel_master_port = 15818
-# 备用隧道host和端口
-tunnel_slave_host = "tps172.kdlapi.com"
-tunnel_slave_port = 15818
-# 切换阀值
-threshold = 2
+
 
 
 # 代理中间件
