@@ -27,15 +27,15 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 # Obey robots.txt rules
 # 设置是否服从网站的爬虫规则
 ROBOTSTXT_OBEY = False
-
+REDIRECT_ENABLED = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # 同时并发请求数，越大则爬取越快同时负载也大
-# CONCURRENT_REQUESTS = 1
-
+CONCURRENT_REQUESTS = 10
+DOWNLOAD_DELAY = 0.5
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -44,7 +44,7 @@ ROBOTSTXT_OBEY = False
 #禁止cookies,防止被ban
 COOKIES_ENABLED = False
 REDIRECT_ENABLED = False                       # 关掉重定向, 不会重定向到新的地址
-HTTPERROR_ALLOWED_CODES = [301, 302]     # 返回301, 302时, 按正常返回对待, 可以正常写入cookie
+# HTTPERROR_ALLOWED_CODES = [200]     # 返回301, 302时, 按正常返回对待, 可以正常写入cookie
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
 
@@ -59,15 +59,30 @@ HTTPERROR_ALLOWED_CODES = [301, 302]     # 返回301, 302时, 按正常返回对
 #SPIDER_MIDDLEWARES = {
 #    'scrapyspider.middlewares.ScrapyspiderSpiderMiddleware': 543,
 #}
-
+# LOCAL_MONGO_HOST = '192.168.1.127'
+LOCAL_MONGO_HOST = '127.0.0.1'
+LOCAL_MONGO_PORT = 27017
+DB_NAME = 'pengpai_test'
+LOCAL_MONGO_HOST1 = '192.168.1.127'
+LOCAL_MONGO_PORT1 = 27017
+DB_NAME1 = 'pengpai_test'
+local_mongo_host = '127.0.0.1'
+local_mongo_port = 27017
+DB_NAME2 = 'pengpai_test'
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    # 'scrapyspider.middlewares.MyCustomDownloaderMiddleware': 543,
     'scrapyspider.middlewares.ProxyDownloadMiddleware': 100,
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 101,
 }
-HTTPERROR_ALLOWED_CODES = [403]
+
+ITEM_PIPELINES = {
+
+    'scrapyspider.pipelines.MongoDBPipeline': 300,
+    'scrapyspider.pipelines.MongoDBPipeline1': 301,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html

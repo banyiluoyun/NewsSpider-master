@@ -10,7 +10,9 @@ import re
 from scrapyspider.spiders.tools import tools_spider
 spider_tools = tools_spider()
 import time
+from scrapyspider.spiders.tools import dict_clumn
 news_item=newsItem()
+comment_item = commentItem()
 class NewspengpaiSpider(CrawlSpider):
     # 爬虫名称
     name = "pengpainews"
@@ -72,11 +74,104 @@ class NewspengpaiSpider(CrawlSpider):
             'list_25635',
             # 快看
             'list_25600'
+            #财经10%公司
+            'list_25434',
+            # 能见度
+            'list_25436',
+            # 地产界
+            'list_25433',
+            # 财经上下游
+            'list_25438',
+            # 金改实验室
+            'list_25435',
+            # 牛市点线面
+            'list_25437',
+            # 科技湃
+            'list_27234',
+            # 澎湃商学院
+            'list_25485',
+            # 自贸区连线
+            'list_25432',
+            # 进博会在线
+            'list_37978',
+            # 澎湃号
+            # 湃客
+            # 'channel_36079',
+            # 政务
+            # 'channel_27392',
+            # 媒体
+            # 'channel_77286',
+            # 思想
+            # 社论
+            'list_25444',
+            # 澎湃评论
+            'list_27224',
+            # 思想湃
+            'list_26525',
+            # 上海书评
+            'list_26878',
+            # 思想市场
+            'list_25483',
+            # 私家历史
+            'list_25457',
+            # 翻书党
+            'list_25574',
+            # 艺术评论
+            'list_25455',
+            # 古代艺术
+            'list_26937',
+            # 文化课
+            'list_25450',
+            # 逝者
+            'list_25482',
+            # 澎湃研究所
+            'list_25445',
+            # 市政厅
+            'list_25456',
+            # 城市漫步
+            'list_26915',
+            # 智库报告
+            'list_25446',
+            # 专栏
+            'list_25536',
+            # 异次元
+            'list_26506',
+            # 生活
+            # 有戏
+            'list_25448',
+            # 文艺范
+            'list_26609',
+            # 身体
+            'list_25942',
+            # 私·奔
+            'list_26015',
+            # 运动家
+            'list_25599',
+            # 私家地理
+            'list_25842',
+            # 非常品
+            'list_80623',
+            # 楼市
+            'list_26862',
+            # 生活方式
+            'list_25769',
+            # 澎湃联播
+            'list_25990',
+            # 视界
+            'list_26173',
+            # 亲子学堂
+            'list_26202',
+            # 赢家
+            'list_26404',
+            # 汽车圈
+            'list_26490',
         ]
+
         for list_id in start_urls2:
-            # print(url)
-            for i in range(2,3):
-                time.sleep(2)
+            # print(dict_clumn[list_id])
+            news_item['strColumn'] = dict_clumn[list_id]
+            for i in range(0,26):
+                # time.sleep(2)
                 # print(url.split("list_")[1])
                 id_lanmu = list_id.split("list_")[1]
                 if id_lanmu:
@@ -90,10 +185,10 @@ class NewspengpaiSpider(CrawlSpider):
         url_news = response.xpath(xpath_shishi).extract()
         for url in url_news:
             url_news1 = "http://www.thepaper.cn/" + url
-            # 新闻链接
-            news_item['strPickUrl'] = url_news1
+
             yield Request(url=url_news1,callback=self.parse_content,dont_filter=True)
     def parse_lanmu(self, response):
+
 
         resp = response
         tree = etree.HTML(resp.body)
@@ -101,31 +196,46 @@ class NewspengpaiSpider(CrawlSpider):
         url_news = tree.xpath(path_link)
         for url in url_news:
             url_news1 = "http://www.thepaper.cn/" + url
-            news_item['strPickUrl'] = url_news1
+
             yield Request(url=url_news1,callback=self.parse_content,dont_filter=True)
     def parse_content(self,response):
-
+        news_item['strPickUrl'] = response.url
+        # print(response.url)
         # news_item['strTitle']
         #带div的数据
-        xpath_allpage = '//div[@class="newscontent"]'
-        html_page = response.xpath(xpath_allpage).extract()[0]
-        # news_item['html_page'] = html_page
+        xpath_allpage = '//div[@class="news_txt"]'
+        try:
+            html_page = response.xpath(xpath_allpage).extract()[0]
+            news_item['html_page'] = html_page
+            # print(html_page)
+        except Exception as e:
+            pass
         #作者
         xpath_author = '//div[@class="clearfix"]'
         # 发布时间
         xpath_pubdate = '//div[@class="news_about"]/p[2]'
-        news_item['strPubDate'] = spider_tools.str_tool_html(response.xpath(xpath_pubdate).extract()[0].split("来")[0])
+        try:
+            news_item['strPubDate'] = spider_tools.str_tool_html(response.xpath(xpath_pubdate).extract()[0].split("来")[0])
+        except Exception as e:
+            pass
 
         # 文章标题
         xpath_title = '//div[@class="newscontent"]/h1'
-        title_html = response.xpath(xpath_title).extract()[0]
+        try:
+            title_html = response.xpath(xpath_title).extract()[0]
+        except Exception as e:
+            pass
         title_result1 = spider_tools.str_tool_html(title_html)
         news_item['strTitle'] = title_result1
         # 文章正文
         xpath_detail4 = '//div[@class="news_txt"]'
         xpath_content = xpath_detail4
-        content_selector = spider_tools.str_tool_html(response.xpath(xpath_content).extract()[0])
-        news_item['strComment'] = content_selector
+        try:
+            content_selector = spider_tools.str_tool_html(response.xpath(xpath_content).extract()[0])
+        except Exception as e:
+            pass
+        news_item['strContent'] = content_selector
+        # print(news_item['strContent'])
 
         #文章来源
         xpath_source = '//div[@class="news_about"]/p[1]'
@@ -140,7 +250,7 @@ class NewspengpaiSpider(CrawlSpider):
         # 采集时间戳
         news_item['strPickDate'] = time.asctime(time.localtime(time.time()))
         # 新闻分类
-        news_item['strType'] = ''
+        news_item['strType'] = '1'
         # 来源网站，例如新浪微博，
         news_item['strName']='澎湃新闻'
         # 部委名称
@@ -148,10 +258,10 @@ class NewspengpaiSpider(CrawlSpider):
         # 是否有评论，默认1
         xpath_strHasComment = '//*[@id="comm_span"]/span'
         commentnum = response.xpath(xpath_strHasComment).extract()[0]
-        print(commentnum)
-        commentnum = int(str(commentnum).split("（")[1].split("）")[0])
-        print(commentnum)
-        if commentnum > 0:
+
+        commentnum = str(commentnum).split("（")[1].split("）")[0]
+
+        if commentnum != 0:
             news_item['strHasComment'] = '1'
         # 地区代码，默认000000
         news_item['strCityCode'] = '000000'
@@ -163,6 +273,18 @@ class NewspengpaiSpider(CrawlSpider):
         news_item['strId'] = "5da57ac5efe0b4fd03fe9c20"
         news_item['strTargetId'] = ''
         # templateurl, 不存在默认为空
+        xpath_img = '//div[@class="news_txt"]//img/@src'
+        strCommentSource = response.xpath(xpath_img).extract()
+        # print(type(strCommentSource))
+        img_list = []
+        img_url_dict = {}
+        for img_url in strCommentSource:
+
+            for i in range(len(strCommentSource)):
+                img_str = "img" + str(i)
+                img_url_dict[img_str] = img_url
+        img_list.append(img_url_dict)
+        news_item['strCommentSource'] = img_list
         news_item['strCommentTemplateUrl'] = ''
         # 新闻评论
         news_item['strComment'] = ''
@@ -176,6 +298,10 @@ class NewspengpaiSpider(CrawlSpider):
         news_item['intUpNum'] = ''
         # 评论数
         news_item['intCommentNum'] = commentnum
+        # 创建者名称
+        news_item['strCreatName'] = '商信政通'
+        # print(news_item)
+        yield news_item
 
 
 

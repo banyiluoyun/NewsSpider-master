@@ -7,8 +7,40 @@
 
 from scrapy import Item, Field
 
+
+'''# 栏目名称
+                    "strColumn": strClumn,
+                    "strClass":strClass,
+                    # 新闻正文
+                    "strContent": strContent,
+                    # 新闻标题
+                    "strTitle": strTitle,
+                    # 新闻采集时间
+                    "strPickDate": strPickDate,
+                    # 新闻链接
+                    "strPickUrl": strPickUrl,
+                    # 采集网站
+                    "strName": "新华网",
+                    # 新闻发布时间
+                    "strPubDate": strPubDate,
+                    # 新闻分类，
+                    "strType": "1",
+                    # 地区代码，默认000000,    标记id，默认为空，     地区，默认中国
+                    "strCityCode": "000000",  "strArea": "中国",
+                    # 图片以及视频url，list或者dict格式存储
+                    "strCommentSource": strContentSource,
+                    # 部委ID
+                    "strId": "5da57a93f71846ace852457d",
+                    # 创建者名称                 # 爬取状态
+                    "strCreatName": "商信政通", "strState": "1",'''
+
+
 class newsItem(Item):   # 新闻内容包含以下属性
     _id = Field()  # 微博id
+    # 创建者名称
+    strCommentSource = Field()
+    strCreatName = Field()
+    strColumn = Field()
     # weibo_url = Field()  # 微博URL
     strPickUrl = Field()  # 微博URL
     # created_at = Field()  # 微博发表时间
@@ -48,6 +80,25 @@ class newsItem(Item):   # 新闻内容包含以下属性
     intTranspondNum = Field()
     html_page = Field()
     content_source = Field()
+
+    # 文章标题
+    title = Field()
+    # 时间
+    date = Field()
+    # 正文
+    content = Field()
+    # 简介（20个字）
+    abstract = Field()
+    # 文章热度（参与数）
+    heat = Field()
+    # ID
+    id = Field()
+    # 链接
+    url = Field()
+    # 评论字典
+    comments = Field()
+
+
 class commentItem(Item):
     _id = Field()
     comment_user_id = Field()  # 评论用户的id

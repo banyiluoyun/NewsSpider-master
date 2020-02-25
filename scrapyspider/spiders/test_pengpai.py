@@ -1,4 +1,4 @@
-# import requests
+import requests
 # from lxml import etree
 #
 # # url = "https://www.thepaper.cn/load_chosen.jsp?nodeids=25949&topCids=6043251,6043255,6043151,6042428,6043144,&pageidx=5&lastTime=1582070444798"
@@ -9,8 +9,10 @@
 # # url6 = 'https://www.thepaper.cn/newsDetail_forward_6045198'
 #
 # url = 'https://www.thepaper.cn/newsDetail_forward_6067051'
+# url = 'https://世界末流大学.com'
 # resp = requests.get(url)
-# # print(resp.text)
+# print(resp.status_code)
+# print(resp.text)
 # content = resp.text.encode(resp.encoding).decode(resp.apparent_encoding)
 # tree = etree.HTML(content)
 # # path_link = '//*[@id="listContent"]/div/h2/a/@href'
