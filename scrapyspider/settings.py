@@ -75,6 +75,7 @@ DB_NAME2 = 'pengpai_test'
 DOWNLOADER_MIDDLEWARES = {
    # 'scrapyspider.middlewares.MyCustomDownloaderMiddleware': 543,
     'scrapyspider.middlewares.ProxyDownloadMiddleware': 100,
+    'scrapyspider.middlewares.RedirectMiddleware': 200,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 101,
 }
 
