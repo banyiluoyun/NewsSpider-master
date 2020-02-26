@@ -61,7 +61,7 @@ class ScrapyspiderSpiderMiddleware(object):
 class RedirectMiddleware(object):
     def process_response(self, request, response, spider):
         http_code = response.status
-        if http_code == 418:
+        if http_code == 418 or http_code==429:
             spider.logger.error('ip 被封了!!!请更换ip,或者停止程序...')
             return request
         else:
