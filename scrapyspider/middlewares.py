@@ -58,7 +58,14 @@ class ScrapyspiderSpiderMiddleware(object):
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
 
-        
+class RedirectMiddleware(object):
+    def process_response(self, request, response, spider):
+        http_code = response.status
+        if http_code == 418 or http_code==429:
+            spider.logger.error('ip 被封了!!!请更换ip,或者停止程序...')
+            return request
+        else:
+            return response
 
 logger = logging.getLogger(__name__)
 # 隧道id和密码

@@ -1,18 +1,19 @@
 # -*- coding:utf-8 -*-
-from scrapy.crawler import CrawlerProcess
+
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy.utils.project import get_project_settings
+
 from lxml import etree
 from scrapy.http import Request
 from scrapy import cmdline, selector
 from scrapyspider.items import newsItem,commentItem
-import re
+
 from scrapyspider.spiders.tools import tools_spider
 spider_tools = tools_spider()
 import time
 from scrapyspider.spiders.tools import dict_clumn
 news_item=newsItem()
 comment_item = commentItem()
+import pandas
 class NewspengpaiSpider(CrawlSpider):
     # 爬虫名称
     name = "pengpainews"

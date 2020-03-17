@@ -31,7 +31,7 @@ REDIRECT_ENABLED = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # 同时并发请求数，越大则爬取越快同时负载也大
 CONCURRENT_REQUESTS = 10
-DOWNLOAD_DELAY = 0.5
+DOWNLOAD_DELAY = 2
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
@@ -75,6 +75,7 @@ DB_NAME2 = 'pengpai_test'
 DOWNLOADER_MIDDLEWARES = {
    # 'scrapyspider.middlewares.MyCustomDownloaderMiddleware': 543,
     'scrapyspider.middlewares.ProxyDownloadMiddleware': 100,
+    'scrapyspider.middlewares.RedirectMiddleware': 200,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 101,
 }
 
