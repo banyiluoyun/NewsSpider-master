@@ -1,22 +1,32 @@
 # -*- coding:utf-8 -*-
+from datetime import datetime
 
+from scrapy.crawler import CrawlerProcess
 from scrapy.spiders import CrawlSpider, Rule
 
+
+from scrapyspider.spiders.fenci import Fenci
+
+from scrapy.utils.project import get_project_settings
 from lxml import etree
 from scrapy.http import Request
+import os
 from scrapy import cmdline, selector
+
 from scrapyspider.items import newsItem,commentItem
+import re
 
 from scrapyspider.spiders.tools import tools_spider
 spider_tools = tools_spider()
 import time
-from scrapyspider.spiders.tools import dict_clumn
+
+from scrapyspider.spiders.tools import dict_clumn_pengpai
 news_item=newsItem()
 comment_item = commentItem()
-import pandas
+fenci = Fenci()
 class NewspengpaiSpider(CrawlSpider):
     # 爬虫名称
-    name = "pengpainews"
+    name = "thepaper_all"
     #澎湃全网
     allowed_domains = ["https://www.thepaper.cn/" ]
     #新闻版
@@ -169,11 +179,10 @@ class NewspengpaiSpider(CrawlSpider):
         ]
 
         for list_id in start_urls2:
-            # print(dict_clumn[list_id])
-            news_item['strColumn'] = dict_clumn[list_id]
-            for i in range(0,26):
-                # time.sleep(2)
-                # print(url.split("list_")[1])
+
+            news_item['strColumn'] = dict_clumn_pengpai[list_id]
+            for i in range(1,25):
+
                 id_lanmu = list_id.split("list_")[1]
                 if id_lanmu:
                     url = 'https://www.thepaper.cn/load_index.jsp?nodeids=' + id_lanmu +"&topCids=&pageidx="+str(i)+"&isList=true"
@@ -201,24 +210,23 @@ class NewspengpaiSpider(CrawlSpider):
             yield Request(url=url_news1,callback=self.parse_content,dont_filter=True)
     def parse_content(self,response):
         news_item['strPickUrl'] = response.url
-        # print(response.url)
-        # news_item['strTitle']
+
         #带div的数据
         xpath_allpage = '//div[@class="news_txt"]'
         try:
             html_page = response.xpath(xpath_allpage).extract()[0]
             news_item['html_page'] = html_page
-            # print(html_page)
+
         except Exception as e:
             pass
         #作者
         xpath_author = '//div[@class="clearfix"]'
         # 发布时间
         xpath_pubdate = '//div[@class="news_about"]/p[2]'
-        try:
-            news_item['strPubDate'] = spider_tools.str_tool_html(response.xpath(xpath_pubdate).extract()[0].split("来")[0])
-        except Exception as e:
-            pass
+
+        news_item['strPubDate'] = spider_tools.str_tool_html(response.xpath(xpath_pubdate).extract()[0].split("来")[0]).replace('年','-').replace('月','-').replace('日','')
+        print(news_item['strPubDate'])
+
 
         # 文章标题
         xpath_title = '//div[@class="newscontent"]/h1'
@@ -236,7 +244,8 @@ class NewspengpaiSpider(CrawlSpider):
         except Exception as e:
             pass
         news_item['strContent'] = content_selector
-        # print(news_item['strContent'])
+        news_item['list_words'] = fenci.tokenization(news_item['strContent'])
+
 
         #文章来源
         xpath_source = '//div[@class="news_about"]/p[1]'
@@ -245,7 +254,7 @@ class NewspengpaiSpider(CrawlSpider):
             if content_source:
                 content_source =spider_tools.str_tool_html(content_source)
                 news_item['content_source'] = content_source
-                # print(news_item['content_source'])
+
         except Exception as e:
             pass
         # 采集时间戳
@@ -276,7 +285,7 @@ class NewspengpaiSpider(CrawlSpider):
         # templateurl, 不存在默认为空
         xpath_img = '//div[@class="news_txt"]//img/@src'
         strCommentSource = response.xpath(xpath_img).extract()
-        # print(type(strCommentSource))
+
         img_list = []
         img_url_dict = {}
         for img_url in strCommentSource:
@@ -301,16 +310,13 @@ class NewspengpaiSpider(CrawlSpider):
         news_item['intCommentNum'] = commentnum
         # 创建者名称
         news_item['strCreatName'] = '商信政通'
-        # print(news_item)
+
         yield news_item
 
 
-
-
-
-
 if __name__ == "__main__":
-    cmdline.execute('scrapy crawl pengpainews'.split())
+    # os.chdir('/home/lis/Desktop/test/NewsSpider-master/scrapyspider/spiders')
+    cmdline.execute('scrapy crawl thepaper_all'.split())
 
 
 
