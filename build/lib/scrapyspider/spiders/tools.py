@@ -1,5 +1,5 @@
 import re
-dict_clumn_pengpai = {'list_26490':'汽车圈','list_26404':'赢家','list_26202':'亲子学堂',
+dict_clumn = {'list_26490':'汽车圈','list_26404':'赢家','list_26202':'亲子学堂',
 'list_26173':'视界','list_25990':'澎湃联播','list_25769':'生活方式',
 'list_26862':'楼市','list_80623':'非常品','list_25842':'私家地理','list_25599':'运动家',
 'list_26015':'私·奔','list_25942':'身体','list_26609':'文艺范','list_25448':'有戏',
@@ -21,19 +21,6 @@ dict_clumn_pengpai = {'list_26490':'汽车圈','list_26404':'赢家','list_26202
 'list_25463':'港台来信','list_25424':'一号专案', 'list_25426':'法治中国','list_25423':'人事风向',
 'list_25490':'打虎记','list_25489':'舆论场','list_25462':'中国政库','list_25488':'中南海',
 'channel_25950':'时事栏目',}
-dict_clumn_cctv1 = {
-    'news':"新闻",
-    'china':"国内",
-    'world':"国际",
-    'society':"社会",
-    'law':"法制",
-    'ent':"文娱",
-    'tech':"科技",
-    'life':"生活",
-    'edu':"教育",
-}
-dict_clumn_cctv2 = {"": "", }
-
 class tools_spider:
     #去除字符串中的html标签
     def str_tool_html(self,str_html):
@@ -41,6 +28,7 @@ class tools_spider:
         str_tool_html=re.sub('<[^<]+?>', '', str_tool_html).replace('\n', '').strip()
         # print(str_tool_html)
         return str_tool_html
+
 
 
 

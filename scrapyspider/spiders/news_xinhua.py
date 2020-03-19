@@ -393,7 +393,7 @@ class NewsxinhuaSpider(CrawlSpider):
         news_item['list_words'] =list_words
         news_item['html_page'] =htmlpage
 
-        print(news_item)
+        # print(news_item)
         yield news_item
 if __name__ == '__main__':
     cmdline.execute('scrapy crawl xinhua'.split())

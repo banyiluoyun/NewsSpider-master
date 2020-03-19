@@ -1,3 +1,7 @@
 from scrapy import cmdline
+import os
 #
-cmdline.execute("scrapy crawl pengpainews".split())
+c = os.getcwd()
+print(c)
+os.chdir('/home/lis/Desktop/test/NewsSpider-master/scrapyspider/spiders')
+cmdline.execute("scrapy crawl thepaper_all".split())
