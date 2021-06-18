@@ -43,7 +43,7 @@ greenlet==0.4.15
 hyperlink==19.0.0
 idna==2.8
 idna-ssl==1.1.0
-impacket==0.9.19
+impacket==0.9.23
 incremental==17.5.0
 ipython==7.3.0
 ipython-genutils==0.2.0
