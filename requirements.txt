@@ -54,7 +54,7 @@ jedi==0.13.3
 jieba==0.39
 Jinja2==2.10.1
 jmespath==0.9.4
-joblib==0.14.0
+joblib==1.2.0
 kenlm==0.0.0
 kiwisolver==1.1.0
 ldap3==2.5.1
